@@ -10,9 +10,27 @@ class User:
 		self.user_balance = user_balance
 		self.user_id = user_id
 
-	def register(self):
-		userData.update()
-		print("registeration success....")
+	def balanceEdit(self,value,modifier):
+		if modifier == "+":
+			self.user_balance +=value
+		else:
+			self.user_balance -= value
+class Activities:
+	def __init__(self,user,plays,win,lost):
+		self.user = user
+		self.plays = plays
+		self.win= win
+		self.lost = lost
+
+	def winrate(self):
+		winratePer = (self.win*100)/self.plays
+		return winratePer
+	def plays(self):
+		self.plays +=1
+	def win(self):
+		self.win +=1
+	def lost(self):
+		self.lost+=1
 def play(user_name):
 	user_input = input("enter 1 to play")
 	if int(user_input) == 1:
@@ -25,7 +43,6 @@ def play(user_name):
 				print(gameData)
 			else:
 				print("wrong answer")
-				gameData.update({user_name:{"player":'name',"guess":guess,"success":False,"answer":answer,"id":len(gameData)}})
 				print(gameData)
 			pOrExit = input("to play again enter>>1, to exit enter>>0:")
 			if pOrExit == 1:
