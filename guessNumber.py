@@ -13,11 +13,11 @@ class User:
 	def __str__(self) -> str:
 		return self.user_name
 
-	def balanceEdit(self,value,modifier):
+	def balanceEdit(self,modifier):
 		if modifier == "+":
-			self.user_balance +=value
+			self.user_balance +=5000
 		else:
-			self.user_balance -= value
+			self.user_balance -= 5000
 class UserProfile:
 	def __init__(self,user,plays,win,lost):
 		self.user = user
@@ -26,28 +26,34 @@ class UserProfile:
 		self.lost = lost
 
 	def winrate(self):
+		if self.plays == 0:
+			return '0%'
 		winratePer = (self.win*100)/self.plays
-		return winratePer
+		return str(winratePer)+'%'
 	def playE(self):
 		self.plays +=1
 	def winE(self):
 		self.win +=1
 	def lostE(self):
 		self.lost+=1
-def play(user,user_profile):
+
+
+def play(userS,user_profile):
 	while True:
 		user_input = input("enter 1 to play or enter 2 to look profile")
-		if int(user_input) == 1:
+		if int(user_input)== 1:
 			while True:
-				guess=input(f"{user.user_name} guess the number:")
+				guess=input(f"{userS.user_name} guess the number:")
 				answer = random.randint(1,3)
 				if int(guess)==answer:
 					print("huray the answer is correct")
+					userS.balanceEdit('+')
 					user_profile.playE()
 					user_profile.winE()
 				else:
 					print("wrong answer")
 					print(f"answer is {answer}")
+					userS.balanceEdit('-')
 					user_profile.playE()
 					user_profile.lostE()
 				pOrExit = input("to play again enter>>1, to exit enter>>0:")
@@ -56,10 +62,13 @@ def play(user,user_profile):
 				else:
 					break
 		elif int(user_input)==2:
-			print('matches ',user_profile.plays)
-			print('win ',user_profile.win)
-			print('lost ',user_profile.lost)
-			print('winrate ',user_profile.winrate())
+			for user in gameData:
+				users = gameData[str(user)]
+				print(f'	__{users.user}__	')
+				print(f'matches:	{users.plays}')
+				print(f'win	   :	{users.win}')
+				print(f'lost   :	{users.lost}')
+				print(f'winrate:	{users.winrate()}')
 def main():
 	while True:
 		loginOregister = input("login for 1 and register for 2: ")
